@@ -11,6 +11,7 @@ android_app_import {
     overrides: ["AudioFX", "MusicFX"],
     required: [
         "libv4a_aidl",
+        "privapp-permissions-viper4android.xml",
     ],
 }
 
@@ -54,4 +55,12 @@ cc_prebuilt_library_shared {
     compile_multilib: "both",
     vendor: true,
     relative_install_path: "soundfx",
+}
+
+// Privileged-permission allowlist. Installs to /system/etc/permissions/ and is
+// required by the app, so it is installed together with it.
+prebuilt_etc {
+    name: "privapp-permissions-viper4android.xml",
+    src: "permissions/privapp-permissions-viper4android.xml",
+    sub_dir: "permissions",
 }
