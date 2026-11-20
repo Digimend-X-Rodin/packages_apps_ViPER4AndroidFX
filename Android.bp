@@ -1,26 +1,36 @@
 android_app_import {
     name: "ViPER4AndroidFX",
     owner: "ViperFX",
-    apk: "system-ext/app/ViPER4AndroidFX/ViPER4AndroidFX.apk",
+    apk: "system/priv-app/ViPER4AndroidFX/ViPER4AndroidFX.apk",
+    privileged: true,
     preprocessed: true,
     presigned: true,
     dex_preopt: {
         enabled: false,
     },
     overrides: ["AudioFX", "MusicFX"],
-    system_ext_specific: true,
+    required: [
+        "libv4a_aidl",
+    ],
 }
 
+// ViPER4AndroidFX AIDL audio effect library (AIDL audio HAL, Android 15+).
+// Exports createEffect/destroyEffect/queryEffect and registers the
+// "viper.control" binder service consumed by ViPER4AndroidFX.
 cc_prebuilt_library_shared {
-    name: "libv4a_re",
+    name: "libv4a_aidl",
     installable: true,
     strip: {
         none: true,
     },
     target: {
         android_arm: {
-            srcs: ["vendor/lib/soundfx/libv4a_re.so"],
+            srcs: ["vendor/lib/soundfx/libv4a_aidl.so"],
             shared_libs: [
+                "libbase",
+                "libbinder_ndk",
+                "libcutils",
+                "libfmq",
                 "liblog",
                 "libm",
                 "libdl",
@@ -28,8 +38,12 @@ cc_prebuilt_library_shared {
             ],
         },
         android_arm64: {
-            srcs: ["vendor/lib64/soundfx/libv4a_re.so"],
+            srcs: ["vendor/lib64/soundfx/libv4a_aidl.so"],
             shared_libs: [
+                "libbase",
+                "libbinder_ndk",
+                "libcutils",
+                "libfmq",
                 "liblog",
                 "libm",
                 "libdl",
